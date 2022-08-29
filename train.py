@@ -69,7 +69,6 @@ train_loader = DataLoader(dataset=dataset,
                           num_workers=0)
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-
 model = Neuralnetwork(input_size, hidden_size, output_size).to(device)
 
 # Loss and optimizer
@@ -93,8 +92,23 @@ for epoch in range(num_epochs):
         loss.backward()
         optimizer.step()
 
-    if (epoch + 1) % 100 == 0:
+''' if (epoch + 1) % 100 == 0:
         print(f'Epoch [{epoch + 1}/{num_epochs}], Loss: {loss.item():.4f}')
+'''
+#print(f'final loss: {loss.item():.4f}')
 
-print(f'final loss: {loss.item():.4f}')
+data = {
+    "model_state": model.state_dict(),
+    "input_size": input_size,
+    "output_size": output_size,
+    "hidden_size": hidden_size,
+    "all_words": all_words,
+    "tags": tags
+}
+
+FILE = "data.pth"
+torch.save(data, FILE)
+
+#print(f'training complete. File saved to {FILE}')
+
 
